@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useBox, usePlane } from '@react-three/cannon';
 import { useGameStore } from '../store/gameStore';
 
@@ -9,11 +9,7 @@ const Wall = ({ position }: { position: [number, number, number] }) => {
   const [ref] = useBox(() => ({
     type: 'Static',
     position,
-    args: [CELL_SIZE, WALL_HEIGHT, CELL_SIZE], // args is half-extent? No, args is [width, height, depth] for BoxGeometry? 
-    // Canon useBox args are [width, height, depth] (full extent) matching Three's BoxGeometry args?
-    // Wait, Canon args are usually half-extents for some shapes, but for Box it mirrors Three.js Geometry args (full width).
-    // Let's verify: default is [1, 1, 1].
-    // If I pass args: [w, h, d], physics body matches that.
+    args: [CELL_SIZE, WALL_HEIGHT, CELL_SIZE], 
   }));
 
   return (
@@ -25,9 +21,6 @@ const Wall = ({ position }: { position: [number, number, number] }) => {
 };
 
 const Floor = () => {
-    // Infinite floor or just large enough?
-    // Large enough.
-    // Rotate x -90 deg
     const [ref] = usePlane(() => ({
         rotation: [-Math.PI / 2, 0, 0],
         position: [0, 0, 0],
@@ -46,7 +39,7 @@ export const Map = () => {
   
   // Memoize walls to avoid re-calculating on every render if store updates unrelated things
   const walls = useMemo(() => {
-    const list: JSX.Element[] = [];
+    const list: React.ReactElement[] = [];
     maze.forEach((row, r) => {
         row.forEach((cell, c) => {
             if (cell === 1) {
