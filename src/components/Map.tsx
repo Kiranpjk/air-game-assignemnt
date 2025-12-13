@@ -15,7 +15,7 @@ const Wall = ({ position }: { position: [number, number, number] }) => {
   return (
     <mesh ref={ref as any}>
       <boxGeometry args={[CELL_SIZE, WALL_HEIGHT, CELL_SIZE]} />
-      <meshStandardMaterial color="#556677" roughness={0.1} metalness={0.5} />
+      <meshStandardMaterial color="#333333" roughness={0.1} metalness={0.5} />
     </mesh>
   );
 };
@@ -29,7 +29,7 @@ const Floor = () => {
     return (
         <mesh ref={ref as any} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
             <planeGeometry args={[1000, 1000]} />
-            <meshStandardMaterial color="#223344" roughness={0.8} metalness={0.2} />
+            <meshStandardMaterial color="#eeeeee" roughness={0.8} metalness={0.2} />
         </mesh>
     );
 }

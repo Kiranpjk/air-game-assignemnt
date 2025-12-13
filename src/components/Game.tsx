@@ -1,5 +1,4 @@
 import { Physics } from '@react-three/cannon';
-import { Stars } from '@react-three/drei';
 import { Player } from './Player';
 import { Map } from './Map';
 import { Goal } from './Goal';
@@ -12,7 +11,7 @@ export const Game = () => {
 
     return (
         <Physics gravity={[0, -10, 0]}>
-            <Stars />
+            <fog attach="fog" args={['#ffffff', 0, 40]} />
             <ambientLight intensity={0.5} />
             <hemisphereLight intensity={0.6} groundColor="#ff0f00" />
             <directionalLight position={[10, 10, 5]} intensity={1} castShadow />

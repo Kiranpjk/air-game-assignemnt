@@ -55,8 +55,37 @@ export const generateMaze = (width: number, height: number): number[][] => {
     }
 
     if (neighbors.length > 0) {
-      // Choose random neighbor
-      const chosen = neighbors[Math.floor(Math.random() * neighbors.length)];
+      // Sort neighbors to prioritize those in positive x and y direction (down and right)
+      // This creates a "flow" towards the goal
+      neighbors.sort((a, b) => {
+        const scoreA = (a.cell.x - current.x) + (a.cell.y - current.y);
+        const scoreB = (b.cell.x - current.x) + (b.cell.y - current.y);
+        // Higher score means moving right/down. We want to prioritize that, but keep some randomness
+        // so it's not a straight line.
+        // Let's use a weighted random choice or just shuffle then sort with low probability
+        
+        // Simple bias: 70% chance to pick "better" direction if available
+        return Math.random() > 0.3 ? scoreB - scoreA : scoreA - scoreB;
+      });
+
+      // Simple implementation: Just pick from the biased list? 
+      // Actually, standard backtrack picks somewhat randomly. 
+      // To strictly bias, we should pick the "best" neighbor more often.
+      
+      // Let's filter neighbors that move us positively
+      const positiveNeighbors = neighbors.filter(n => n.cell.x >= current.x && n.cell.y >= current.y);
+      const otherNeighbors = neighbors.filter(n => n.cell.x < current.x || n.cell.y < current.y);
+
+      let chosen;
+      // 80% chance to pick a positive neighbor if available
+      if (positiveNeighbors.length > 0 && Math.random() < 0.8) {
+         chosen = positiveNeighbors[Math.floor(Math.random() * positiveNeighbors.length)];
+      } else if (otherNeighbors.length > 0) {
+         chosen = otherNeighbors[Math.floor(Math.random() * otherNeighbors.length)];
+      } else {
+         // Fallback if only positive/negative available matching opposite criteria
+         chosen = neighbors[Math.floor(Math.random() * neighbors.length)];
+      }
       
       // Remove wall
       maze[chosen.wall.y][chosen.wall.x] = 0;
