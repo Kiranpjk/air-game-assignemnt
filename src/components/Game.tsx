@@ -13,8 +13,10 @@ export const Game = () => {
     return (
         <Physics gravity={[0, -10, 0]}>
             <Stars />
-            <ambientLight intensity={0.3} />
-            <pointLight position={[10, 10, 10]} intensity={1} />
+            <ambientLight intensity={0.5} />
+            <hemisphereLight intensity={0.6} groundColor="#ff0f00" />
+            <directionalLight position={[10, 10, 5]} intensity={1} castShadow />
+            <pointLight position={[-10, 0, -20]} intensity={0.5} />
             
             <Player />
             <Map />
